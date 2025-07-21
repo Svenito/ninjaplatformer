@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dvi0cgixiu0xx"]
+[gd_scene load_steps=15 format=3 uid="uid://dvi0cgixiu0xx"]
 
 [ext_resource type="Script" uid="uid://88wg7kptjsgg" path="res://scripts/player.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://emytw2da6smq" path="res://sprites/ninja_upper.png" id="2_dqkch"]
@@ -15,7 +15,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("spriteUpper:frame")
+tracks/0/path = NodePath("anchor/spriteUpper:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -30,7 +30,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("spriteUpper:frame")
+tracks/0/path = NodePath("anchor/spriteUpper:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -47,7 +47,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("spriteUpper:frame")
+tracks/0/path = NodePath("anchor/spriteUpper:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -57,9 +57,27 @@ tracks/0/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_ur7pv"]
+resource_name = "jump"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anchor/spriteUpper:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_smehm"]
 _data = {
 &"RESET": SubResource("Animation_fjrip"),
+&"jump": SubResource("Animation_ur7pv"),
 &"run": SubResource("Animation_tuyoq"),
 &"stand": SubResource("Animation_smehm")
 }
@@ -72,7 +90,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("spriteLower:frame")
+tracks/0/path = NodePath("anchor/spriteLower:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -87,7 +105,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("spriteLower:frame")
+tracks/0/path = NodePath("anchor/spriteLower:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -104,7 +122,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("spriteLower:frame")
+tracks/0/path = NodePath("anchor/spriteLower:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -114,9 +132,27 @@ tracks/0/keys = {
 "values": [6]
 }
 
+[sub_resource type="Animation" id="Animation_y4r1p"]
+resource_name = "jump"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anchor/spriteLower:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qlg0r"]
 _data = {
 &"RESET": SubResource("Animation_dqkch"),
+&"jump": SubResource("Animation_y4r1p"),
 &"run": SubResource("Animation_qhqgy"),
 &"stand": SubResource("Animation_qlg0r")
 }
@@ -126,14 +162,16 @@ z_index = 50
 script = ExtResource("1_qhqgy")
 metadata/_edit_group_ = true
 
-[node name="spriteUpper" type="Sprite2D" parent="."]
+[node name="anchor" type="Node2D" parent="."]
+
+[node name="spriteUpper" type="Sprite2D" parent="anchor"]
 z_index = 1
 texture = ExtResource("2_dqkch")
 offset = Vector2(16, 0)
 hframes = 15
 frame = 1
 
-[node name="spriteLower" type="Sprite2D" parent="."]
+[node name="spriteLower" type="Sprite2D" parent="anchor"]
 texture = ExtResource("3_qlg0r")
 offset = Vector2(16, 0)
 hframes = 15
