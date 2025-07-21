@@ -130,7 +130,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [6]
 }
 
 [sub_resource type="Animation" id="Animation_qlg0r"]
@@ -184,18 +184,21 @@ metadata/_edit_group_ = true
 
 [node name="spriteUpper" type="Sprite2D" parent="anchor"]
 z_index = 1
+position = Vector2(-2, -13)
 texture = ExtResource("2_dqkch")
 offset = Vector2(16, 0)
 hframes = 15
 frame = 1
 
 [node name="spriteLower" type="Sprite2D" parent="anchor"]
+position = Vector2(-2, -13)
 texture = ExtResource("3_qlg0r")
 offset = Vector2(16, 0)
 hframes = 15
+frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_k0juu")
 
 [node name="AnimationPlayerUpper" type="AnimationPlayer" parent="."]
