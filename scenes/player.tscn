@@ -1,8 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://dvi0cgixiu0xx"]
+[gd_scene load_steps=23 format=3 uid="uid://dvi0cgixiu0xx"]
 
 [ext_resource type="Script" uid="uid://88wg7kptjsgg" path="res://scripts/player.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://emytw2da6smq" path="res://sprites/ninja_upper.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://3bgu7epbs0iq" path="res://sprites/ninja_lower.png" id="3_qlg0r"]
+[ext_resource type="Script" uid="uid://c8o2bi1npywr0" path="res://scripts/hitbox.gd" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://cq63px5mcp6n6" path="res://scripts/hurtbox.gd" id="5_qlg0r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tuyoq"]
+size = Vector2(8, 18)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k0juu"]
 size = Vector2(12, 20)
@@ -22,6 +27,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("anchor/Hitbox/CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [PackedVector2Array()]
+}
 
 [sub_resource type="Animation" id="Animation_d2wvv"]
 resource_name = "attack"
@@ -38,6 +55,53 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [7, 8, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("anchor/Hitbox/CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(8, -10, 19, -10, 30, -15, 30, -19, 17, -25, 10, -26, 1, -25, 1, -24, 13, -23, 18, -20, 18, -15, 14, -12, 8, -11), PackedVector2Array(19, -25, 19, -26, 16, -27, 4, -27, 1, -26, 1, -25), PackedVector2Array()]
+}
+
+[sub_resource type="Animation" id="Animation_jej6c"]
+resource_name = "climb"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anchor/spriteUpper:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 11]
+}
+
+[sub_resource type="Animation" id="Animation_3v2ag"]
+resource_name = "climb"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anchor/spriteUpper:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
 }
 
 [sub_resource type="Animation" id="Animation_ur7pv"]
@@ -92,41 +156,6 @@ tracks/0/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_3v2ag"]
-resource_name = "climb"
-length = 0.1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("anchor/spriteUpper:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [11]
-}
-
-[sub_resource type="Animation" id="Animation_jej6c"]
-resource_name = "climb"
-length = 0.4
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("anchor/spriteUpper:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [12, 13, 14, 11]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_smehm"]
 _data = {
 &"RESET": SubResource("Animation_fjrip"),
@@ -151,6 +180,41 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_oprun"]
+resource_name = "climb"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anchor/spriteLower:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 11]
+}
+
+[sub_resource type="Animation" id="Animation_f1ej7"]
+resource_name = "hang"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anchor/spriteLower:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
 }
 
 [sub_resource type="Animation" id="Animation_y4r1p"]
@@ -205,41 +269,6 @@ tracks/0/keys = {
 "values": [6]
 }
 
-[sub_resource type="Animation" id="Animation_f1ej7"]
-resource_name = "hang"
-length = 0.1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("anchor/spriteLower:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [11]
-}
-
-[sub_resource type="Animation" id="Animation_oprun"]
-resource_name = "climb"
-length = 0.4
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("anchor/spriteLower:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [12, 13, 14, 11]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qlg0r"]
 _data = {
 &"RESET": SubResource("Animation_dqkch"),
@@ -253,7 +282,6 @@ _data = {
 [node name="player" type="CharacterBody2D"]
 z_index = 50
 script = ExtResource("1_qhqgy")
-metadata/_edit_group_ = true
 
 [node name="anchor" type="Node2D" parent="."]
 
@@ -279,6 +307,24 @@ target_position = Vector2(2, 0)
 position = Vector2(5, -6)
 target_position = Vector2(2, 0)
 
+[node name="Hitbox" type="Area2D" parent="anchor"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("4_dqkch")
+metadata/_custom_type_script = "uid://c8o2bi1npywr0"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="anchor/Hitbox"]
+
+[node name="Hurtbox" type="Area2D" parent="anchor"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("5_qlg0r")
+metadata/_custom_type_script = "uid://cq63px5mcp6n6"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="anchor/Hurtbox"]
+position = Vector2(0, -11)
+shape = SubResource("RectangleShape2D_tuyoq")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -10)
 shape = SubResource("RectangleShape2D_k0juu")
@@ -292,3 +338,5 @@ libraries = {
 libraries = {
 &"": SubResource("AnimationLibrary_qlg0r")
 }
+
+[node name="Area2D" type="Area2D" parent="."]

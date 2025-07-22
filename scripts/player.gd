@@ -8,9 +8,9 @@ enum STATE {
 @export var state = STATE.MOVE
 
 @export var max_speed = 120
-@export var acceleration = 1000
+@export var acceleration = 10000
 @export var air_acceleration = 2000
-@export var friction = 1000
+@export var friction = 10000
 @export var air_friction = 500
 @export var up_gravity = 500
 @export var down_gravity = 600
@@ -24,6 +24,7 @@ var coyote_time = 0
 
 @onready var ray_cast_upper: RayCast2D = $anchor/RayCastUpper
 @onready var ray_cast_lower: RayCast2D = $anchor/RayCastLower
+@onready var hurtbox: Hurtbox = $anchor/Hurtbox
 
 
 func _ready() -> void:
@@ -36,6 +37,9 @@ func _ready() -> void:
 		if anim_name != "attack": return
 		animation_player_upper.play(animation_player_lower.current_animation)
 		animation_player_upper.seek(animation_player_lower.current_animation_position)
+	)
+	hurtbox.hurt.connect(func(other: Hitbox):
+		queue_free()
 	)
 
 func _physics_process(delta: float) -> void:
@@ -121,8 +125,8 @@ func accelerate_horz(direction: float, delta: float) -> void:
 	velocity.x = move_toward(velocity.x, max_speed * direction, accel_amount * delta)
 
 func apply_friction(delta: float) -> void:
-	var friction = friction if is_on_floor() else air_friction
-	velocity.x = move_toward(velocity.x, 0, friction * delta)
+	var player_friction = friction if is_on_floor() else air_friction
+	velocity.x = move_toward(velocity.x, 0, player_friction * delta)
 
 func apply_gravity(delta: float) -> void:
 	if not is_on_floor():

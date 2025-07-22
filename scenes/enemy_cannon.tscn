@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://c66i1npfxj6dv"]
+
+[ext_resource type="Script" uid="uid://b4pd0cucy628" path="res://scripts/enemy_cannon.gd" id="1_exgui"]
+[ext_resource type="Texture2D" uid="uid://bi8dyabk3fnpx" path="res://sprites/cannon_enemy.png" id="1_x4j2v"]
+[ext_resource type="Script" uid="uid://c8o2bi1npywr0" path="res://scripts/hitbox.gd" id="2_agpon"]
+[ext_resource type="Script" uid="uid://cq63px5mcp6n6" path="res://scripts/hurtbox.gd" id="2_mt7hs"]
+
+[node name="EnemyCannon" type="Node2D"]
+script = ExtResource("1_exgui")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_x4j2v")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_mt7hs")
+metadata/_custom_type_script = "uid://cq63px5mcp6n6"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hurtbox"]
+polygon = PackedVector2Array(-9, -2, -2, -7, -2, -9, -9, -9, -9, -15, 8, -15, 8, -15, 8, -10, 3, -5, 9, -2, 9, 0, -9, 0)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("2_agpon")
+metadata/_custom_type_script = "uid://c8o2bi1npywr0"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+polygon = PackedVector2Array(-9, -2, -2, -7, -2, -9, -9, -9, -9, -15, 8, -15, 8, -15, 8, -10, 3, -5, 9, -2, 9, 0, -9, 0)
