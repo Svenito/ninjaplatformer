@@ -1,5 +1,12 @@
 extends CharacterBody2D
 
+enum STATE {
+	MOVE,
+	CLIMB
+}
+
+@export var state = STATE.MOVE
+
 @export var max_speed = 120
 @export var acceleration = 1000
 @export var air_acceleration = 2000
@@ -8,6 +15,8 @@ extends CharacterBody2D
 @export var up_gravity = 500
 @export var down_gravity = 600
 @export var jump_amount = 200.0
+
+var coyote_time = 0
 
 @onready var animation_player_lower: AnimationPlayer = $AnimationPlayerLower
 @onready var animation_player_upper: AnimationPlayer = $AnimationPlayerUpper
@@ -27,29 +36,40 @@ func _ready() -> void:
 	)
 
 func _physics_process(delta: float) -> void:
-	var x_input = Input.get_axis(&"move_left", &"move_right")
-	
-	apply_gravity(delta)
-
-	if x_input != 0:
-		accelerate_horz(x_input, delta)
-		anchor.scale.x = sign(x_input)
-		animation_player_lower.play(&"run")
-	else:
-		apply_friction(delta)
-		animation_player_lower.play(&"stand")
+	match state:
+		STATE.MOVE:
+			coyote_time -= delta
 			
-	if Input.is_action_just_pressed(&"jump") and is_on_floor():
-		velocity.y = -jump_amount
-		
-	if Input.is_action_just_pressed(&"attack"):
-		animation_player_upper.play(&"attack")
-	
-	if not is_on_floor():
-		animation_player_lower.play(&"jump")
+			var x_input = Input.get_axis(&"move_left", &"move_right")
+			
+			apply_gravity(delta)
 
-	move_and_slide()
+			if x_input != 0:
+				accelerate_horz(x_input, delta)
+				anchor.scale.x = sign(x_input)
+				animation_player_lower.play(&"run")
+			else:
+				apply_friction(delta)
+				animation_player_lower.play(&"stand")
+					
+			if Input.is_action_just_pressed(&"jump") and (is_on_floor() or coyote_time > 0):
+				velocity.y = -jump_amount
+				
+			if Input.is_action_just_pressed(&"attack"):
+				animation_player_upper.play(&"attack")
+			
+			if not is_on_floor():
+				animation_player_lower.play(&"jump")
 
+			var was_on_floor = is_on_floor()
+			move_and_slide()
+			if was_on_floor and not is_on_floor() and velocity.y >= 0:
+				coyote_time = 0.02
+				
+			
+		STATE.CLIMB:
+			pass
+			
 func accelerate_horz(direction: float, delta: float) -> void:
 	var accel_amount = acceleration
 	if not is_on_floor(): accel_amount = air_acceleration 
