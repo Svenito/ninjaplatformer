@@ -7,4 +7,4 @@ func _ready() -> void:
 	explosiveness = 1
 	one_shot = true
 	local_coords = true
-	restart()
+	# restart()  # Not needed in later version (4>=)

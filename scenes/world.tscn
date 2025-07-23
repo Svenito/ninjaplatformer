@@ -43,5 +43,5 @@ position = Vector2(295, 112)
 stats = SubResource("Resource_71j4m")
 
 [node name="EnemyCannon2" parent="." instance=ExtResource("3_4wyf3")]
-position = Vector2(250, 112)
+position = Vector2(106, 144)
 stats = SubResource("Resource_qfnet")

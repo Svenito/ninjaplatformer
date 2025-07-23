@@ -1,6 +1,7 @@
 extends Node2D
 
 const SPARK_PARTICLE_BURST_EFFECT = preload("res://scenes/sparks_particle_burst.tscn")
+const IMPACT_PARTICE_BURST_EFFECT = preload("res://scenes/impact_particle_burst_effect.tscn")
 
 @export var stats: Stats :
 	set(value):
@@ -20,6 +21,12 @@ func _ready() -> void:
 		var spark_effect = SPARK_PARTICLE_BURST_EFFECT.instantiate()
 		get_tree().current_scene.add_child(spark_effect)
 		spark_effect.global_position = sprite_2d.global_position
+		
+		var impact_effect = IMPACT_PARTICE_BURST_EFFECT.instantiate()
+		get_tree().current_scene.add_child(impact_effect)
+		impact_effect.global_position = sprite_2d.global_position.move_toward(other.global_position, -8)
+		impact_effect.rotation = sprite_2d.global_position.direction_to(other.global_position).angle()
+		
 		effects_animation_player.play(&"hit_flash")
 		stats.health -= other.damage
 		shaker.shake(2, 0.2)		
