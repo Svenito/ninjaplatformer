@@ -2,7 +2,8 @@ extends CharacterBody2D
 
 enum STATE {
 	MOVE,
-	CLIMB
+	CLIMB,
+	HIT
 }
 
 @export var state = STATE.MOVE
@@ -25,9 +26,16 @@ var coyote_time = 0
 @onready var ray_cast_upper: RayCast2D = $anchor/RayCastUpper
 @onready var ray_cast_lower: RayCast2D = $anchor/RayCastLower
 @onready var hurtbox: Hurtbox = $anchor/Hurtbox
+@onready var effects_animation_player: AnimationPlayer = $EffectsAnimationPlayer
 
+@onready var sprite_upper: Sprite2D = $anchor/spriteUpper
+@onready var sprite_lower: Sprite2D = $anchor/spriteLower
+
+@onready var shaker_upper = Shaker.new(sprite_upper)
+@onready var shaker_lower = Shaker.new(sprite_lower)
 
 func _ready() -> void:
+	sprite_lower.material.set_shader_parameter("flash_colour", Color("ff4d4d"))
 	animation_player_lower.current_animation_changed.connect(func(anim_name: String):
 		if animation_player_upper.current_animation == "attack": return
 		animation_player_upper.play(anim_name)
@@ -40,7 +48,15 @@ func _ready() -> void:
 	)
 	
 	hurtbox.hurt.connect(func(other: Hitbox):
-		queue_free()
+		var x_direction = sign(other.global_position.direction_to(global_position).x)
+		if x_direction == 0: x_direction = -1
+		velocity.x = x_direction * max_speed
+		jump(jump_amount/2)
+		state = STATE.HIT
+		shaker_upper.shake(3, 0.3)
+		shaker_lower.shake(3, 0.3)
+		animation_player_lower.play(&"jump")
+		effects_animation_player.play(&"hit_flash")
 	)
 
 func _physics_process(delta: float) -> void:
@@ -109,8 +125,13 @@ func _physics_process(delta: float) -> void:
 					jump()
 				state = STATE.MOVE
 			
-func jump() -> void:
-	velocity.y = -jump_amount
+		STATE.HIT:
+			move_and_slide()
+			apply_friction(delta)
+			apply_gravity(delta)
+			
+func jump(amount: int = jump_amount) -> void:
+	velocity.y = -amount
 	
 func should_climb_wall() -> bool:
 	return (
