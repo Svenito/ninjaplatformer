@@ -10,6 +10,4 @@ func _ready() -> void:
 func _on_area_entered(area: Area2D) -> void:
 	assert(area is Hurtbox, "Hitbox: area is not a Hurtbox")
 	var hurtbox = area as Hurtbox
-	if hurtbox.is_invincible: return
-	
-	hurtbox.hurt.emit(self)
+	hurtbox.take_hit(self)

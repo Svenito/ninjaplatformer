@@ -1,14 +1,16 @@
 extends Node2D
-@onready var hurtbox: Hurtbox = $Hurtbox
 
+@export var stats: Stats :
+	set(value):
+		stats = value
+		if value is not Stats: return
+		stats = stats.duplicate()
+
+@onready var hurtbox: Hurtbox = $Hurtbox
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	hurtbox.hurt.connect(func(other: Hitbox):
-		queue_free()
+		stats.health -= other.damage
 	)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	stats.no_health.connect(func(): queue_free())
