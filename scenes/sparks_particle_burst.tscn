@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://5yai38m3gtmu"]
+
+[ext_resource type="Texture2D" uid="uid://c4sqirne8vpix" path="res://sprites/hit_particle.png" id="1_1m2fg"]
+[ext_resource type="Script" uid="uid://bntnstxifytdd" path="res://scripts/particle_burst.gd" id="1_7cc13"]
+
+[sub_resource type="Curve" id="Curve_8e8la"]
+_data = [Vector2(0, 0.541177), 0.0, 0.0, 0, 0, Vector2(1, 0.0941178), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ychyf"]
+curve = SubResource("Curve_8e8la")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pqx8s"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, -98, 0)
+scale_curve = SubResource("CurveTexture_ychyf")
+
+[node name="SparksParticleBurst" type="GPUParticles2D"]
+amount = 3
+texture = ExtResource("1_1m2fg")
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_pqx8s")
+script = ExtResource("1_7cc13")
+metadata/_custom_type_script = "uid://bntnstxifytdd"
